@@ -14,7 +14,7 @@ parent-tag {
 ```
 
 You can use id and classes with the same sintax of CSS:
-```
+```css
 div#container.shown {}
 ```
 
@@ -22,7 +22,7 @@ div#container.shown {}
 Is only possible to declare tag's id once, and always before classes. Ex: tag-name#id.class1.class2 ....
 
 Tag bodies can assume 3 forms:
-```
+```css
 /* Block based: Allows declaration of attributes and children */
 div {
   contenteditable="true";
@@ -42,7 +42,7 @@ style [
 ```
 
 Note that, when using hts blocks, the first declaration should be attribute definiton, using the following syntax:
-```
+```css
 link {
     href="css/styles.css"; /* comma are optional */
     rel="stylesheet"
@@ -51,7 +51,7 @@ link {
 ```
 
 After attributes definition you begin children declaration, which can be strings, multiline content blocks or regular hts tags.
-```
+```css
 div {
     "This is a string"
     
