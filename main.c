@@ -72,12 +72,13 @@ size_t hts_rule_bloq(LexCursor cursor) {
 }
 
 #define HTS(X) \
-  X(HTS_WS,      lex_builtin_rule_ws,              .skip = true) \
-  X(HTS_COMMENT, lex_builtin_rule_clike_mlcomment, .skip=true) \
-  X(HTS_ID,      lex_builtin_rule_id_kebab) \
-  X(HTS_TERM,    hts_rule_term) \
-  X(HTS_STRING,  lex_builtin_rule_string) \
-  X(HTS_BLOQ,    hts_rule_bloq)
+  X(HTS_WS,         lex_builtin_rule_ws,              .skip = true) \
+  X(HTS_COMMENT,    lex_builtin_rule_clike_comment, .skip=true) \
+  X(HTS_COMMENT_ML, lex_builtin_rule_clike_mlcomment, .skip=true) \
+  X(HTS_ID,         lex_builtin_rule_id_kebab) \
+  X(HTS_TERM,       hts_rule_term) \
+  X(HTS_STRING,     lex_builtin_rule_string) \
+  X(HTS_BLOQ,       hts_rule_bloq)
 
 typedef LEX_ENUMX(HTS) HTSTokens;
 
