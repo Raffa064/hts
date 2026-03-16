@@ -35,33 +35,35 @@ h1 "My tittle"
 
 /* Multiline content blocks: Can be used for tags like pre, style, script, and for using regular html inside hts */
 style [
+  body { 
     display: flex;
     flex-direction: column;
-    body { background: red; }
+    background: red;
+  }
 ]
 ```
 
 Note that, when using hts blocks, the first declaration should be attribute definiton, using the following syntax:
 ```css
 link {
-    href="css/styles.css"; /* comma are optional */
-    rel="stylesheet"
-    type="text/css"
+  href="css/styles.css"; /* comma are optional */
+  rel="stylesheet"
+  type="text/css"
 }
 ```
 
 After attributes definition you begin children declaration, which can be strings, multiline content blocks or regular hts tags.
 ```css
 div {
-    "This is a string"
+  "This is a string"
     
-    br {} // this is a tag
+  br {} // this is a tag
     
-    [
-     This is
-     multiline text
-     inside a tag
-    ]
+  [
+    This is
+    multiline text
+    inside a tag
+  ]
 }
 ```
 
