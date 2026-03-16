@@ -18,7 +18,7 @@ You can use id and classes with the same sintax of CSS:
 div#container.shown {}
 ```
 
-> ![TIP]
+> [!TIP]
 Is only possible to declare tag's id once, and always before classes. Ex: tag-name#id.class1.class2 ....
 
 Tag bodies can assume 3 forms:
