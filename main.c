@@ -50,22 +50,22 @@ size_t hts_rule_term(LexCursor cursor) {
 }
 
 size_t hts_rule_bloq(LexCursor cursor) {
-  if (lex_curch(cursor) != '[')
+  if (lex_cursor_ch(cursor) != '[')
     return LEX_NO_MATCH;
 
 
   size_t length = 0;
   int count = 0;
   do {
-    if (lex_curch(cursor) == '\0') {
+    if (lex_cursor_ch(cursor) == '\0') {
       return LEX_NO_MATCH;
     }
     
-    if (lex_curch(cursor) == '[') count++;
-    if (lex_curch(cursor) == ']') count--;
+    if (lex_cursor_ch(cursor) == '[') count++;
+    if (lex_cursor_ch(cursor) == ']') count--;
 
     length++;
-    lex_curmove(&cursor, 1);
+    lex_cursor_move(&cursor, 1);
   } while(count > 0);
 
   return length;
@@ -86,11 +86,11 @@ LexType HTS_TYPES[HTS_COUNT] = LEX_TYPEX(HTS);
 
 [[noreturn]]
 void report_error(Lex l, const char* msg) {
-  size_t column = lex_curcol(l.cursor);
-  size_t line_start = lex_curline_start(l.cursor);
-  size_t line_end = lex_curline_end(l.cursor);
+  size_t column = lex_cursor_col(l.cursor);
+  size_t line_start = lex_cursor_line_start(l.cursor);
+  size_t line_end = lex_cursor_line_end(l.cursor);
   
-  fprintf(stderr, "%.*s\n", (int)(line_end - line_start), lex_view(l, line_start));
+  fprintf(stderr, "%.*s\n", (int)(line_end - line_start), lex_source(l, line_start));
   fprintf(stderr, "%*s Error: %s\n", (int)column, "^", msg);
   exit(1);
 }
@@ -133,7 +133,8 @@ void parse_attribs(Lex *lex, StringBuffer *sb) {
       if (!lex_consume(&b, &value, HTS_STRING))
         report_error(*lex, "Expecting attribute value as string");
 
-      sb_append_fmt(sb, "=\"%.*s\"", (int)lex_tklen(value) - 2, lex_tkstr(value) + 1);
+      LexStringView sv = lex_view_unwrap(value.sv, 1);
+      sb_append_fmt(sb, "=\"" LEX_SVFMT "\"", lex_svarg(sv));
 
       lex_skip(&b, HTS_TERM, ";"); // optional
       
@@ -171,7 +172,8 @@ bool try_parse_tag(Lex *lex, StringBuffer *sb, int level) {
         sb_append_fmt(sb, "</%s>", lex_tkstr_tmp(tag));
       }
     } else if (lex_consume(lex, NULL, HTS_STRING) || lex_consume(lex, NULL, HTS_BLOQ)) { // Open text only body
-      sb_append_fmt(sb, ">%.*s</%s>", (int)lex_tklen(lex->tk) - 2, lex_tkstr(lex->tk) + 1, lex_tkstr_tmp(tag));
+      LexStringView sv = lex_view_unwrap(lex->tk.sv, 1);
+      sb_append_fmt(sb, ">" LEX_SVFMT "</%s>", lex_svarg(sv), lex_tkstr_tmp(tag));
     } else {
       report_error(*lex, "Invalid tag body, expecting '{', '[' or string");
       exit(1);
